@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -293,7 +294,7 @@ func (handle *ContainerdHandler) FetchImage(ctx context.Context, name, plat stri
 
 	resolver, err := dockerconfigresolver.New(
 		ctx,
-		strings.Split(name, "/")[0],
+		strings.Split(name, string(filepath.Separator))[0],
 		dockerconfigresolver.WithSkipVerifyCerts(true),
 	)
 	if err != nil {
@@ -485,7 +486,7 @@ outer:
 func (handle *ContainerdHandler) PushImage(ctx context.Context, ref string, target *ocispec.Descriptor) error {
 	resolver, err := dockerconfigresolver.New(
 		ctx,
-		strings.Split(ref, "/")[0],
+		strings.Split(ref, string(filepath.Separator))[0],
 		dockerconfigresolver.WithSkipVerifyCerts(true),
 	)
 	if err != nil {
